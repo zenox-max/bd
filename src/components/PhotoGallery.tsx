@@ -8,14 +8,11 @@ interface MemoryItem {
 
 const MEMORIES: MemoryItem[] = [
   { caption: "My favorite smile 💕", src: "/videos/cla.mp4" },
-  { caption: "Pure sunshine ☀️", src: "/videos/cl.mp4" },
   { caption: "That laugh I love 😍", src: "/videos/cla-2.mp4" },
-  { caption: "My whole heart 💖", src: "/videos/clauv.mp4" },
   { caption: "Forever you 🌹", src: "/videos/clauvid.mp4" },
   { caption: "Silly little moment 😝", src: "/videos/snap1.mp4" },
   { caption: "Snap of my love 📸", src: "/videos/snap2.mp4" },
   { caption: "Just being you ✨", src: "/videos/vid.mp4" },
-  { caption: "My best friend 🤧", src: "/videos/video.mp4" },
 ];
 
 export const PhotoGallery = ({ onSurprise }: { onSurprise: () => void }) => {
