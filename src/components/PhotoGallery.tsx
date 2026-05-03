@@ -1,64 +1,75 @@
-import { Heart, Camera, Play } from "lucide-react";
-import { useState } from "react";
+import { Heart, Play } from "lucide-react";
+import { useRef, useState } from "react";
 
 interface MemoryItem {
   caption: string;
-  emoji: string;
-  gradient: string;
-  type: "photo" | "video";
+  src: string;
 }
 
 const MEMORIES: MemoryItem[] = [
-  { caption: "The day I met you", emoji: "💕", gradient: "from-pink-300 via-rose-300 to-orange-200", type: "photo" },
-  { caption: "Our first adventure", emoji: "🌅", gradient: "from-purple-300 via-pink-300 to-yellow-200", type: "video" },
-  { caption: "Lazy mornings", emoji: "☕", gradient: "from-amber-200 via-rose-200 to-pink-300", type: "photo" },
-  { caption: "Dancing in the kitchen", emoji: "💃", gradient: "from-fuchsia-300 via-pink-300 to-rose-300", type: "video" },
-  { caption: "Late night talks", emoji: "🌙", gradient: "from-indigo-300 via-purple-300 to-pink-300", type: "photo" },
-  { caption: "That silly trip", emoji: "🚗", gradient: "from-sky-300 via-cyan-300 to-teal-200", type: "video" },
-  { caption: "Birthdays past", emoji: "🎂", gradient: "from-rose-300 via-pink-400 to-purple-300", type: "photo" },
-  { caption: "Forever begins now", emoji: "💍", gradient: "from-amber-300 via-rose-300 to-fuchsia-300", type: "video" },
+  { caption: "My favorite smile 💕", src: "/videos/cla.mp4" },
+  { caption: "Pure sunshine ☀️", src: "/videos/cl.mp4" },
+  { caption: "That laugh I love 😍", src: "/videos/cla-2.mp4" },
+  { caption: "My whole heart 💖", src: "/videos/clauv.mp4" },
+  { caption: "Forever you 🌹", src: "/videos/clauvid.mp4" },
+  { caption: "Silly little moment 😝", src: "/videos/snap1.mp4" },
+  { caption: "Snap of my love 📸", src: "/videos/snap2.mp4" },
+  { caption: "Just being you ✨", src: "/videos/vid.mp4" },
+  { caption: "My best friend 🤧", src: "/videos/video.mp4" },
 ];
 
 export const PhotoGallery = ({ onSurprise }: { onSurprise: () => void }) => {
-  const [flipped, setFlipped] = useState<number | null>(null);
+  const [playing, setPlaying] = useState<number | null>(null);
+  const refs = useRef<(HTMLVideoElement | null)[]>([]);
+
+  const toggle = (i: number) => {
+    const v = refs.current[i];
+    if (!v) return;
+    if (playing === i) {
+      v.pause();
+      setPlaying(null);
+    } else {
+      refs.current.forEach((other, idx) => {
+        if (other && idx !== i) other.pause();
+      });
+      v.play().catch(() => {});
+      setPlaying(i);
+      onSurprise();
+    }
+  };
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
       {MEMORIES.map((m, i) => (
         <button
           key={i}
-          onClick={() => {
-            setFlipped(flipped === i ? null : i);
-            onSurprise();
-          }}
-          className="group relative aspect-square rounded-3xl overflow-hidden shadow-card hover:shadow-glow transition-all duration-500 hover:-translate-y-2 hover:rotate-2"
+          onClick={() => toggle(i)}
+          className="group relative aspect-[9/16] rounded-3xl overflow-hidden shadow-card hover:shadow-glow transition-all duration-500 hover:-translate-y-2 bg-black"
         >
-          <div className={`absolute inset-0 bg-gradient-to-br ${m.gradient}`} />
-          <div className="absolute inset-3 rounded-2xl border-4 border-white/60 backdrop-blur-sm bg-white/10 flex flex-col items-center justify-center p-4">
-            <div className="text-6xl mb-3 group-hover:scale-125 transition-transform duration-500">
-              {flipped === i ? "❤️" : m.emoji}
+          <video
+            ref={(el) => (refs.current[i] = el)}
+            src={m.src}
+            className="absolute inset-0 w-full h-full object-cover"
+            playsInline
+            loop
+            muted={false}
+            preload="metadata"
+            onEnded={() => setPlaying(null)}
+          />
+          <div className={`absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent transition-opacity ${playing === i ? "opacity-40" : "opacity-100"}`} />
+          {playing !== i && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-20 h-20 rounded-full bg-white/95 flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform">
+                <Play className="w-10 h-10 text-primary fill-primary ml-1" />
+              </div>
             </div>
-            {m.type === "video" ? (
-              <div className="flex items-center gap-1 px-3 py-1 bg-black/40 rounded-full mb-2">
-                <Play className="w-3 h-3 text-white fill-white" />
-                <span className="text-xs font-bold text-white uppercase tracking-wider">Video</span>
-              </div>
-            ) : (
-              <div className="flex items-center gap-1 px-3 py-1 bg-black/30 rounded-full mb-2">
-                <Camera className="w-3 h-3 text-white" />
-                <span className="text-xs font-bold text-white uppercase tracking-wider">Photo</span>
-              </div>
-            )}
-            <p className="font-script text-white text-xl text-center drop-shadow-md">
+          )}
+          <div className="absolute bottom-0 left-0 right-0 p-4 pointer-events-none">
+            <p className="font-script text-white text-2xl text-center drop-shadow-lg font-bold">
               {m.caption}
             </p>
           </div>
-          <Heart className="absolute top-3 right-3 w-5 h-5 text-white/90 fill-white/40 group-hover:animate-heartbeat" />
-          {m.type === "video" && (
-            <div className="absolute bottom-3 left-3 w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-              <Play className="w-5 h-5 text-primary fill-primary ml-0.5" />
-            </div>
-          )}
+          <Heart className="absolute top-3 right-3 w-6 h-6 text-white fill-primary/80 group-hover:animate-heartbeat drop-shadow-lg" />
         </button>
       ))}
     </div>
