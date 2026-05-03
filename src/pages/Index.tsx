@@ -3,7 +3,7 @@ import { OpeningScene } from "@/components/OpeningScene";
 import { FloatingHearts } from "@/components/FloatingHearts";
 import { Confetti } from "@/components/Confetti";
 import { BirthdayCake } from "@/components/BirthdayCake";
-
+import { PhotoGallery } from "@/components/PhotoGallery";
 import { LoveLetter } from "@/components/LoveLetter";
 import { ClickBurst } from "@/components/ClickBurst";
 import { Countdown } from "@/components/Countdown";
