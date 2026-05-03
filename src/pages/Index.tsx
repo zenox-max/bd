@@ -3,7 +3,7 @@ import { OpeningScene } from "@/components/OpeningScene";
 import { FloatingHearts } from "@/components/FloatingHearts";
 import { Confetti } from "@/components/Confetti";
 import { BirthdayCake } from "@/components/BirthdayCake";
-
+import { PhotoGallery } from "@/components/PhotoGallery";
 import { LoveLetter } from "@/components/LoveLetter";
 import { ClickBurst } from "@/components/ClickBurst";
 import { Countdown } from "@/components/Countdown";
@@ -97,6 +97,15 @@ const Index = () => {
             <p className="font-script text-2xl text-primary/80">all your favorites, in one place</p>
           </div>
           <FoodFeast onSurprise={triggerConfetti} />
+        </section>
+
+        {/* Gallery — Her Memories */}
+        <section className="py-20 px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-gradient mb-2 font-extrabold">Her Memories</h2>
+            <p className="font-script text-2xl text-primary/80">photos & videos of you being amazing</p>
+          </div>
+          <PhotoGallery onSurprise={triggerConfetti} />
         </section>
 
         {/* Final */}
