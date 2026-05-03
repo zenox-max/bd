@@ -99,15 +99,6 @@ const Index = () => {
           <FoodFeast onSurprise={triggerConfetti} />
         </section>
 
-        {/* Gallery — Her Memories */}
-        <section className="py-20 px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-gradient mb-2 font-extrabold">Her Memories</h2>
-            <p className="font-script text-2xl text-primary/80">photos & videos of you being amazing</p>
-          </div>
-          <PhotoGallery onSurprise={triggerConfetti} />
-        </section>
-
         {/* Final */}
         <section className="py-24 px-6 text-center">
           <div className="max-w-3xl mx-auto">
